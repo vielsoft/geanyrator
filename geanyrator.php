@@ -18,20 +18,15 @@
 
 // Get the user options.
 $opt = getopt("d:e:");
-// Make sure that extensions is array.
-if (isset($opt['e']) && is_array($opt['e'])) {
-  $extensions = $opt['e'];
-}
-else {
-  $extensions = array($opt['e']);
-}
 // Flag to determine if the file is whitelisted.
 $flag = FALSE;
 // Flag to determine if the operation is successful.
 $success = FALSE;
-if (isset($opt['d']) && is_dir($opt['d'])) {
+if (isset($opt['d']) && is_dir($opt['d']) && isset($opt['e'])) {
   $scandir = new RecursiveDirectoryIterator($opt['d']);
   $tags = NULL;
+  // Make sure that extensions is array.
+  (is_array($opt['e'])) ? $extensions = $opt['e'] : $extensions = array($opt['e']);
   foreach (new RecursiveIteratorIterator($scandir) as $file) {
     if (!is_dir($file)) {
       if (in_array(strtolower(array_pop(explode('.', $file))), $extensions)) {
